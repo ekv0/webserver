@@ -14,17 +14,32 @@
 
 ## 并发性能
 
-<img src="./screenshot/1.png" alt="cpu" width="600" />
+<img src="./screenshot/1.png" alt="1.png" width="600" />
 
 测试环境：Ubuntu 20.04, i7 9750H, 16GB RAM
 
 ## 运行效果
 
-我在VPS上部署了这个服务器，可以点进去看看效果：<http://www.ohiok.cyou:65530>
+我在VPS上部署了这个服务器，可以点进去看看效果（可能要先刷新一次）：<http://www.ohiok.cyou:65530>
 
-（由于VPS在美国，访问延迟会比较高，这不是代码的问题。这个VPS只有1核CPU，500MB内存，所以如果对这个VPS测试并发量，得到的数据不是真实的瓶颈）
+（由于VPS在美国，访问延迟会比较高，这不是代码的问题。这个VPS只有1核CPU，500MB内存，所以QPS受限于硬件配置）
 
-（在本地运行时可以流畅打开视频，但是在VPS上运行时视频显示no video with supported format and mime type，可能和HTTP或者HTML有关，以后有空再解决）
+（在本地运行时可以流畅打开视频，但是在VPS上运行时视频显示no video with supported format and mime type，好像和HTML有关，以后有空再解决）
+
+## 功能
+
+因为是web server，只服务静态资源，没有返回动态页面响应和数据库请求之类的功能。
+
+当访问的资源不存在时返回定制的404页面。
+
+可以对HTTP协议实现长连接（persistent）和短连接的管理。如果HTTP请求header里没有`Connection`，会根据HTTP版本决定是否使用长连接。
+
+`webserver`类构造函数可以传入类似Nginx config file里`root`和`index`功能的参数，可配置性比较高。
+
+### todo
+
+- 后续有时间考虑加入类似Nginx读取配置文件运行多个server的功能，以及实现reverse proxy和fastCGI。
+- 暂时只实现了GET请求的处理。后续再深入了解一下HTTP协议，然后支持其他的HTTP method
 
 ## 安装
 
@@ -63,24 +78,11 @@ sudo webserver
 sudo make uninstall
 ```
 
-## 功能
-
-因为是web server，只服务静态资源，没有返回动态页面响应和数据库请求之类的功能。
-
-可以对HTTP协议实现长连接（persistent）和短连接的管理。如果HTTP请求header里没有`Connection`，会根据HTTP版本决定是否使用长连接。
-
-`webserver`类构造函数可以传入类似Nginx config file里`root`和`index`功能的参数，可配置性比较高。
-
-### todo
-
-- 后续有时间考虑加入类似Nginx读取配置文件运行多个server的功能，以及实现reverse proxy和fastCGI。
-- 暂时只实现了GET请求的处理。后续再深入了解一下HTTP协议，然后支持其他的HTTP method
-
 ## 参考资料
 
 要实现的功能和整体结构参考了[markparticle/WebServer](https://github.com/markparticle/WebServer)，但**具体的结构**和**大部分代码**都是自己实现的。
 
-POSIX Thread的使用参考了 *Advanced Programming in the Unix Environment* 和Linux man(1) 。
+IO Multiplexing和POSIX Thread参考了 *Advanced Programming in the Unix Environment* 以及Linux man(1) 。
 
 ## License
 
