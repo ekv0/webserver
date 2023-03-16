@@ -18,7 +18,7 @@
 
 工具：[Webbench](http://home.tiscali.cz/~cz210552/webbench.html)
 
-2023-03-16：bug fix；把shared_ptr的构造由`new`改为`make_shared`，QPS提升到1.3w
+2023-03-16：bug fix；把`shared_ptr`的构造由`new`改为`make_shared`，QPS提升到1.3w
 
 <img src="./screenshot/20230316/thread=12-accept=1-log=false/Screenshot_20230316_023923.png" alt="2.png" width="600" />
 
@@ -30,7 +30,7 @@
 
 我在VPS上部署了这个服务器，可以点进去看看效果（可能要先刷新一次）：<http://www.ohiok.cyou:65530>
 
-（由于VPS在美国，访问延迟会比较高，这不是代码的问题。这个VPS只有1核CPU，500MB内存，所以QPS受限于硬件配置）
+（由于VPS在美国，访问延迟会比较高，也可能被墙，这不是代码的问题。这个VPS只有1核CPU，500MB内存，所以QPS受限于硬件配置）
 
 ## 技术点
 
