@@ -43,9 +43,7 @@ bool http_conn::get_trigger()
 
 http_conn::~http_conn()
 {
-    dbg("about to close fd");
     close(_fd);
-    dbg("about to decrement");
     decr_conn();
 }
 
@@ -53,7 +51,7 @@ ssize_t http_conn::read()
 {
     ssize_t len;
     do {
-        len = rw_buf.read_fd(_fd);
+        len = rw_buf.read_fd(fd());
     } while (len > 0 && ET);    //when in ET, read all or until interrupted
     //debug log
     rw_buf.base()[rw_buf.len()] = 0;
@@ -93,7 +91,7 @@ ssize_t http_conn::write()
     //write
     ssize_t len;
     do {
-        len = writev(_fd,iov,2);
+        len = writev(fd(),iov,2);
         //update iovec len
         if (len > iov[0].iov_len) { //iov[0].iov_len must be greater than 0 after subtraction
             len -= iov[0].iov_len;

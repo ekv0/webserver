@@ -5,6 +5,7 @@
 #include <string.h>
 #include <sys/uio.h>
 
+#include <iostream>
 #include <string>
 #include <stdexcept>
 
@@ -32,6 +33,7 @@ public:
             throw std::runtime_error("scalable_buffer assignment to a different ratio!");
         }
         copy(oth);
+        return *this;
     }
 
     //append to the end

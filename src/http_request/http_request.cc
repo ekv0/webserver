@@ -32,6 +32,7 @@ http_request::http_parse_state http_request::parse(scalable_buffer &buf)
     while (buf.readable() && state != FINISH) {
         auto end = search(buf.base(), buf.base() + buf.readable(), eol, eol + 2);
         std::string line(buf.base(), end);
+        dbg(line,end - buf.base(),buf.readable());
         switch(state) {
             case REQUEST_LINE:
                 if(!parse_request_line(line)) {

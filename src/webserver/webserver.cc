@@ -119,7 +119,10 @@ void webserver::start()
         log_debug("returned from epoll wait. n = " + to_string(n));
         for (size_t i(0); i < n; ++i) {
             log_debug("i = " + to_string(i));
-            auto pconn = timer.get(events[i].data.fd);
+            auto fd = events[i].data.fd;
+            log_debug("got event fd = " + to_string(fd));
+            auto pconn = timer.get(fd);
+            log_debug("got pconn");
             string ipport("unknown host");  //to avoid expiration
             if (pconn) {
                 ipport = str_ipport((*pconn)->addr());
@@ -195,14 +198,14 @@ void webserver::accept_handler()
         }
         set_nonblock(clientfd);
         //construct a new http connection and time it
-        timer.add(shared_ptr<http_conn>(new http_conn(clientfd,addr,root,index_pages)),[ipport,this](shared_ptr<http_conn> conn,bool expired){
+        auto sp = make_shared<http_conn>(clientfd,addr,root,index_pages);
+        timer.add(sp,[ipport,this](shared_ptr<http_conn> conn,bool expired){
             if (expired) {
                 log_info("connection from " + ipport + " timeout. closing");
             }
             else {
                 log_info("close connection from " + ipport);
             }
-            dbg("about to del fd in epoller");
             ep.del(conn->fd());
         });   //no call back is needed, as http_conn's destructor will do anything necessary
         log_debug(ipport + " added to timer");
@@ -378,7 +381,7 @@ void *webserver::signal_handler_thrd_fn(void *arg)
                 ins->~webserver();
                 dbg("destructed");
                 //terminate process
-                exit(0);
+                ::exit(0);
                 break;
             default:
                 log_err("unexpected signal: " + to_string(signo));

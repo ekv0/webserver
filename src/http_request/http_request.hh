@@ -9,6 +9,8 @@
 #include <regex>
 #include <stdexcept>
 
+#include <dbg.h>
+
 class http_request
 {
 public:

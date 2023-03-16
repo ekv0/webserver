@@ -58,6 +58,10 @@ private:
     //use fd as identity
     struct http_conn_ptr_hasher {
         size_t operator()(std::shared_ptr<http_conn> conn) const {
+            //for debug
+            if (!conn.get())
+                throw std::runtime_error("shared_ptr<http_conn> is null");
+            log_debug("from hasher: conn->fd() = " + std::to_string(conn->fd()));
             return static_cast<size_t>(conn->fd());
         }
     };

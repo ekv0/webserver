@@ -26,7 +26,8 @@ size_t scalable_buffer::writable() const
 void scalable_buffer::appended(size_t n)
 {
     if (n > writable()) {   //the client write over the memory bound
-        throw runtime_error("scalable_buffer write overflow");
+        // throw runtime_error("scalable_buffer write overflow");
+        std::cerr << "scalable_buffer write overflow" << std::endl;
     }
     head += n;
 }
@@ -34,7 +35,8 @@ void scalable_buffer::appended(size_t n)
 void scalable_buffer::retrieved(size_t n)
 {
     if (n > readable()) {    //the client read over valid region
-        throw runtime_error("scalable_buffer read overflow");
+        // throw runtime_error("scalable_buffer read overflow");
+        std::cerr << "scalable_buffer read overflow" << std::endl;
     }
     tail += n;
     if (tail == head) { //to save some space when no data presents

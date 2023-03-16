@@ -12,11 +12,19 @@
 
 ## 并发性能
 
-[Webbench](http://home.tiscali.cz/~cz210552/webbench.html)测试结果显示QPS接近1w。
+测试参数：日志关闭，worker线程数量8/12
 
-<img src="./screenshot/1.png" alt="1.png" width="600" />
+配置：Ubuntu 20.04, i7 9750H, 16GB RAM
 
-测试环境：Ubuntu 20.04, i7 9750H, 16GB RAM
+工具：[Webbench](http://home.tiscali.cz/~cz210552/webbench.html)
+
+2023-03-16：bug fix；把shared_ptr的构造由`new`改为`make_shared`，QPS提升到1.3w
+
+<img src="./screenshot/20230316/thread=12-accept=1-log=false/Screenshot_20230316_023923.png" alt="2.png" width="600" />
+
+2023-03-02：QPS大约0.7w
+
+<img src="./screenshot/20230302/1.png" alt="1.png" width="600" />
 
 ## 运行效果
 

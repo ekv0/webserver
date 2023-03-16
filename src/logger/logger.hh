@@ -31,7 +31,7 @@ public:
         log(level,msg);
     }
     void flush() {
-        if (enabled) {
+        if (enabled && async) {
             pool->block();
         }
     }

@@ -16,11 +16,10 @@ int main()
         true,   //enable logger
         logger::DEBUG,
         "/var/log/webserver.log",
-        false,  //async
+        true,  //async
         1024,   //log queue cap
-        2,  //nthread
+        12,  //nthread
         1024    //task queue cap
     );
-    sleep(1);
     w.start();
 }

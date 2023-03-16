@@ -10,7 +10,7 @@ epoller::epoller(size_t max_event) : max_event(max_event)
     errno = 0;
     epfd = epoll_create(1);
     if (errno != 0) {
-        //log
+        log_err("epoll_create error: " + std::string(strerror(errno)));
         throw std::runtime_error("epoll_create error: " + std::string(strerror(errno)));
     }
     errno = save;
@@ -40,8 +40,7 @@ void epoller::ctl(int fd,int op,uint32_t events)
     }
     int save = errno;
     if (epoll_ctl(epfd,op,fd,(op == EPOLL_CTL_DEL) ? nullptr : &ev) == -1) {
-        //log
-        perror("");
+        log_err("epoll_ctl error: " + std::string(strerror(errno)));
         throw std::runtime_error("epoll_ctl error: " + std::string(strerror(errno)));
     }
     errno = save;
@@ -52,7 +51,7 @@ size_t epoller::wait(int timeout)
     int save = errno;
     int val = epoll_wait(epfd,events_,max_event,timeout);
     if (val == -1) {
-        //log
+        log_err("epoll_wait error: " + std::string(strerror(errno)));
         throw std::runtime_error("epoll_wait error: " + std::string(strerror(errno)));
     }
     errno = save;

@@ -17,7 +17,9 @@ void logger::init(const string log_path,log_level target_level, bool async, size
     }
     this->async = async;
     //only one worker thread for log writing
-    pool = new thread_pool(1,max_queue_capacity);
+    if (async) {
+        pool = new thread_pool(1,max_queue_capacity);
+    }
     this->target_level = target_level;
 }
 

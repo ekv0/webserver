@@ -5,6 +5,7 @@
 #include <sys/time.h>
 #include <pthread.h>
 
+#include <iostream>
 #include <list>
 #include <unordered_map>
 #include <functional>
@@ -95,9 +96,15 @@ T *expirer<T,_Hash>::get(size_t id)
 {
     //maybe
     if (id_mp.count(id) == 0) {
+        // std::cerr << id << " is nullptr" << std::endl;
         return nullptr;
     }
-    return &(id_mp[id]->obj);
+    // std::cerr << id << " is not nullptr" << std::endl;
+    // std::cerr << "return " << &(id_mp[id]->obj) << std::endl;
+    T *addr;
+    while ((uint64_t)(addr = &(id_mp[id]->obj)) <= (uint64_t)0x1000)
+        std::cerr << "invalid addr: " << addr << std::endl;
+    return addr;
 }
 
 template<typename T,typename _Hash>
