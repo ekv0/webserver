@@ -18,7 +18,7 @@
 
 工具：[Webbench](http://home.tiscali.cz/~cz210552/webbench.html)
 
-2023-03-16：bug fix；把`shared_ptr`的构造由`new`改为`make_shared`，QPS提升到1.3w
+2023-03-16：QPS提升到1.3w，在bug fix和把`shared_ptr`的构造由`new`改为`make_shared`之后
 
 <img src="./screenshot/20230316/thread=12-accept=1-log=false/Screenshot_20230316_023923.png" alt="2.png" width="600" />
 
