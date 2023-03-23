@@ -10,6 +10,14 @@
 - 实现为单例模式的同步/异步日志系统
 - HTTP请求解析类和HTTP响应生成类
 
+### 单Reactor多线程
+
+<img src="./media/overview.png" alt="overview.png" width="600" />
+
+其中Reactor在主线程运行，其他三种handler运行在worker线程。
+
+线程池的目的就是为handler提供线程资源，同时最小化线程创建和销毁的开销。
+
 ## 并发性能
 
 测试参数：日志关闭，worker线程数量8/12
@@ -20,11 +28,11 @@
 
 2023-03-16：QPS提升到1.3w，在bug fix和把`shared_ptr`的构造由`new`改为`make_shared`之后
 
-<img src="./screenshot/20230316/thread=12-accept=1-log=false/Screenshot_20230316_023923.png" alt="2.png" width="600" />
+<img src="./bench-result/20230316/thread=12-accept=1-log=false/Screenshot_20230316_023923.png" alt="2.png" width="600" />
 
 2023-03-02：QPS大约0.7w
 
-<img src="./screenshot/20230302/1.png" alt="1.png" width="600" />
+<img src="./bench-result/20230302/1.png" alt="1.png" width="600" />
 
 ## 运行效果
 
